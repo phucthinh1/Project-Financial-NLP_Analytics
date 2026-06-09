@@ -1,0 +1,21 @@
+services:
+ pyspark-jupyter:
+   image: quay.io/jupyter/pyspark-notebook
+   container_name: pyspark-jupyterNLP
+   ports:
+     - "8888:8888"
+     - "4040:4040"
+   volumes:
+     - ./work:/home/jovyan/work
+ minio:
+    image: minio/minio
+    container_name: minio-NLPstorage
+    ports:
+      - "9000:9000" # Cổng API để Spark kết nối
+      - "9001:9001" # Cổng giao diện Web (Console)
+    environment:
+      MINIO_ROOT_USER: dataNLPmining-lab
+      MINIO_ROOT_PASSWORD: dataNLPmining-lab
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./minio_data:/data
